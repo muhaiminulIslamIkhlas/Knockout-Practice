@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Knockout js</title>
+</head>
+<body>
+	<!-- First Name : <input type="text" name="firstname" data-bind="value: FirstName"><br />
+	Last Name : <input type="text" name="lastname" data-bind="value: LastName"><br />
+	<p>
+		Hello <span data-bind="text:FullName" />
+	</p>
+	<br /> -->
+	<h2>Account Details : <span data-bind="text:Id" /></h2>
+	<h2>Account Details : <span data-bind="text:Name" /></h2>
+	<h2>Account Details : <span data-bind="text:Balance" /></h2>
+	<hr>
+	Balance : <input type="text" data-bind="value:Balance">
+	<input type="button" id="btnShow" value="Show Details"><br />
+	Amount : <input type="text" id="txtAmount"><input type="button" id="btnDeposite" value="Deposite">
+	<hr>
+	New Balance : <input type="text" data-bind="value:Balance">
+	<hr>
+	Account Id's : <select data-bind="options: Accounts, optionsText:'Name',optionsValue:'Id'"></select>
+	<hr>
+	New Id : <input type="text" id="newId"><br>
+	New Name : <input type="text" id="newName"><br>
+	New Balance : <input type="text" id="newBalance"><br>
+	<input type="button" id="btnAddAccount" value="Add New Account">
+
+	<!-- id : <span data-bind="text:Id" /><br />
+	Name : <span data-bind="text:name" /><br />
+	Balance : <span data-bind="text:Balance" /><br /> -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script type='text/javascript' src='knckout.js'></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btnShow").click(function(){
+			alert("Id is : "+accViewModel.Id+" Balance is : "+accViewModel.Balance());
+		})
+
+		$("#btnDeposite").click(function(){
+			accViewModel.Balance(accViewModel.Balance()+Number($("#txtAmount").val()));
+		})
+		$("#btnAddAccount").click(function(){
+			var accc=new Account($("#newId").val(),$("#newName").val(),$("#newBalance").val());
+			accViewModel.Accounts.push(accc);
+			alert(accViewModel.Accounts.length)
+		})
+	})
+</script>
+<script type="text/javascript">
+	// var NameViewModel=function(fname,lname){
+	// 	this.FirstName=ko.observable(fname);
+	// 	this.LastName=ko.observable(lname);
+	// 	this.FullName=ko.computed(function(){
+	// 		return this.FirstName()+" "+this.LastName();
+	// 	},this);
+	// }
+
+	// ko.applyBindings(new NameViewModel("Muhaimin","Ikhlas"));
+
+	function Account(id,name,balance){
+		this.Id=id;
+		this.Name=name;
+		this.Balance=balance;
+	}
+
+	function AccountViewModel(acc){
+		this.Id=acc.Id;
+		this.Name=acc.Name;
+		this.Balance=ko.observable(acc.Balance);
+		a1=new Account(2,"A2",2000);
+		a3=new Account(3,"A3",3000);
+		a4=new Account(4,"A4",4000);
+		this.Accounts=ko.observableArray([a1,a4,a3]);
+	}
+
+	var acc=new Account(1,"Muhaimin",1000);
+	var accViewModel=new AccountViewModel(acc);
+	ko.applyBindings(accViewModel);
+</script>
+</body>
+</html>
